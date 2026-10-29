@@ -2,68 +2,76 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#000000"><title>بوابة الاشتراك</title>
+<meta name="theme-color" content="#08080a"><title>دخول</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--fg:#f4f8ff;--muted:#8591a0;--line:rgba(235,244,255,.13);--line2:rgba(235,244,255,.3);--err:#ff7d90;--ok:#8ff0c2}
+:root{--fg:#fff;--muted:rgba(235,240,255,.66);--line:rgba(255,255,255,.16);--line2:rgba(255,255,255,.34);--err:#ffa3b0;--ok:#ffffff;--blue:#0a84ff}
 *{box-sizing:border-box}
-html{background:#000}
-body{margin:0;min-height:100vh;background:#000;color:var(--fg);font:16px/1.7 "Tajawal","Segoe UI",Tahoma,sans-serif;display:grid;place-items:center;padding:20px;position:relative;overflow-x:hidden}
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,#000 100%)}
+html{background:#070708}
+body{margin:0;min-height:100vh;background:linear-gradient(160deg,#08080a,#141418 55%,#0a0a0c);color:var(--fg);font:16px/1.7 "Tajawal","Segoe UI",Tahoma,sans-serif;display:grid;place-items:center;padding:20px;position:relative;overflow-x:hidden}
+.orbs{position:fixed;inset:-40px;z-index:0;pointer-events:none;overflow:hidden;transform:translate(calc(var(--px,0)*34px),calc(var(--py,0)*34px));transition:transform .6s ease-out}
+.orbs i{position:absolute;border-radius:50%;will-change:transform}
+.orbs i:nth-child(1){width:70vmax;height:70vmax;left:-20vmax;top:-22vmax;background:radial-gradient(circle,rgba(150,150,160,.55),transparent 62%);animation:f1 26s ease-in-out infinite alternate}
+.orbs i:nth-child(2){width:62vmax;height:62vmax;right:-22vmax;top:10vmax;background:radial-gradient(circle,rgba(90,90,100,.6),transparent 62%);animation:f2 30s ease-in-out infinite alternate}
+.orbs i:nth-child(3){width:54vmax;height:54vmax;left:8vmax;bottom:-26vmax;background:radial-gradient(circle,rgba(200,200,210,.28),transparent 62%);animation:f3 34s ease-in-out infinite alternate}
+@keyframes f1{to{transform:translate(12vmax,10vmax)}}
+@keyframes f2{to{transform:translate(-14vmax,-6vmax)}}
+@keyframes f3{to{transform:translate(10vmax,-10vmax)}}
 
-.card{position:relative;z-index:1;width:min(460px,100%);padding:38px 32px 30px;background:rgba(7,8,11,.8);border:1px solid var(--line);border-radius:20px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 40px 120px #000,inset 0 1px 0 rgba(255,255,255,.07);animation:enter .8s ease both}
-@keyframes enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card{position:relative;z-index:1;width:min(460px,100%);padding:36px 30px 28px;background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.22);border-radius:30px;-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);box-shadow:0 24px 60px rgba(3,6,25,.45),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.08);animation:enter .7s cubic-bezier(.2,.8,.2,1) backwards;transition:transform .25s ease-out}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(280px circle at var(--mx,18%) var(--my,0%),rgba(255,255,255,.2),transparent 62%)}
+.card>*{position:relative}
+@keyframes enter{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
 .admin{width:min(760px,100%)}
 
-/* صفحة الدخول المنقسمة */
-#loginCard{width:min(940px,100%);padding:0;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+#loginCard{width:min(440px,100%);padding:34px 30px 26px;display:block}
 #loginCard.hidden{display:none!important}
-.brand{padding:48px 42px;border-inline-end:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,0) 55%);display:flex;flex-direction:column;justify-content:center}
-.mark{width:52px;height:52px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:14px;font-size:24px;color:#fff;text-shadow:0 0 18px rgba(190,220,255,.9);box-shadow:0 0 30px rgba(170,210,255,.15)}
-.brand h2{margin:22px 0 6px;font-size:28px;line-height:1.3}
-.lead{margin:0;color:var(--muted);text-align:start}
-.points{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:14px}
-.points li{display:flex;gap:10px;align-items:center;color:#c9d6e4;font-size:15px}
-.points svg{flex:none;width:18px;height:18px;color:#fff}
-.formside{padding:48px 42px}
+.brand{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 0 8px}
+.mark{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;font-size:24px;color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 8px 24px rgba(0,0,0,.25)}
+.brand h2{margin:22px 0 6px;font-size:30px;font-weight:700;line-height:1.3}
+.lead{margin:14px 0 0;color:var(--muted);text-align:center}
+.points{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.points li{display:flex;gap:6px;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--line);color:rgba(240,244,255,.88);font-size:13px}
+.points svg{flex:none;width:14px;height:14px;color:var(--ok)}
+.formside{padding:0}
 
-.sigil{text-align:center;font-size:28px;color:#fff;text-shadow:0 0 24px rgba(190,220,255,.8)}
+.sigil{text-align:center;font-size:28px;color:#fff}
 h1{text-align:center;font-size:28px;font-weight:700;margin:8px 0 6px}
-.formside h1,.formside .sub{text-align:start}
+.formside h1,.formside .sub{text-align:center}
 h3{margin:0 0 6px;font-size:17px}
-p{color:var(--muted);text-align:center;margin:0 0 24px}
-label{display:block;margin:18px 0 7px;color:#b4c1cf;font-size:13px}
+p{color:var(--muted);text-align:center;margin:0 0 22px}
+label{display:block;margin:16px 0 7px;color:rgba(235,240,255,.78);font-size:13px}
 
-input,textarea{width:100%;padding:13px 14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;color:var(--fg);font:inherit;transition:border-color .2s,box-shadow .2s,background .2s}
-input::placeholder,textarea::placeholder{color:#475260}
-input:hover,textarea:hover{border-color:var(--line2)}
-input:focus,textarea:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.06);box-shadow:0 0 0 4px rgba(190,220,255,.12)}
-input:-webkit-autofill{-webkit-text-fill-color:#fff;box-shadow:0 0 0 100px #0b0d12 inset}
+input,textarea,select{width:100%;padding:13px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:16px;color:#fff;font:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);transition:border-color .2s,box-shadow .2s,background .2s}
+input::placeholder,textarea::placeholder{color:rgba(235,240,255,.4)}
+input:hover,textarea:hover,select:hover{background:rgba(255,255,255,.13)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 4px rgba(255,255,255,.12)}
+input:-webkit-autofill{-webkit-text-fill-color:#fff;box-shadow:0 0 0 100px #1c1c20 inset}
 textarea{min-height:90px;resize:vertical}
+select{color-scheme:dark}
 .field{position:relative}
-.field svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none;transition:color .2s}
+.field svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none;transition:color .2s}
 .field:focus-within svg{color:#fff}
 .field input{padding-right:44px}
-#code{text-align:right;letter-spacing:.14em;font-family:Consolas,monospace;text-transform:uppercase}
-#code::placeholder{letter-spacing:.14em}
+#code{text-align:right;letter-spacing:.16em;font-family:Consolas,monospace;text-transform:uppercase}
+#code::placeholder{letter-spacing:.16em}
 
-button,.btn{display:block;width:100%;margin-top:16px;padding:13px;border:1px solid var(--line2);border-radius:10px;background:transparent;color:var(--fg);font:inherit;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:background .2s,box-shadow .2s,border-color .2s,transform .1s}
-button:hover,.btn:hover{border-color:#fff}
-button:active,.btn:active{transform:scale(.99)}
-#redeem,#adminLogin,#saveSettings,#addCode,#changePassword,.btn{background:#fff;color:#000;border-color:#fff}
-#redeem{margin-top:24px;padding:14px;font-size:17px}
-#redeem:hover,#adminLogin:hover,#saveSettings:hover,#addCode:hover,#changePassword:hover,.btn:hover{background:#e3efff;box-shadow:0 0 34px rgba(200,225,255,.4)}
-button:focus-visible,.btn:focus-visible,a:focus-visible{outline:2px solid #bcd9ff;outline-offset:3px}
-button:disabled{opacity:.5;cursor:wait}
-.links{display:flex;align-items:center;gap:6px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
-#showRules,#showAdminPage{display:inline-block;width:auto;margin:0;padding:6px 10px;border:0;background:none;color:var(--muted);font-weight:500;font-size:14px}
-#showRules:hover,#showAdminPage:hover{color:#fff;box-shadow:none}
+button,.btn{display:block;width:100%;margin-top:14px;padding:13px;border:1px solid rgba(255,255,255,.26);border-radius:16px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.3);transition:background .2s,transform .12s,box-shadow .2s}
+button:hover,.btn:hover{background:rgba(255,255,255,.2)}
+button:active,.btn:active{transform:scale(.97)}
+#redeem,#adminLogin,#saveSettings,#addCode,#changePassword,.btn{background:linear-gradient(180deg,#fafafc,#c4c4ca);color:#0b0b0d;border-color:rgba(255,255,255,.5);box-shadow:inset 0 1px 0 #fff,0 10px 26px rgba(255,255,255,.12)}
+#redeem{margin-top:22px;padding:14px;font-size:17px}
+#redeem:hover,#adminLogin:hover,#saveSettings:hover,#addCode:hover,#changePassword:hover,.btn:hover{background:linear-gradient(180deg,#fff,#d6d6dc)}
+button:focus-visible,.btn:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+button:disabled{opacity:.55;cursor:wait}
+.links{display:flex;align-items:center;gap:6px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+#showRules,#showAdminPage{display:inline-block;width:auto;margin:0;padding:6px 12px;border:0;background:none;box-shadow:none;color:var(--muted);font-weight:500;font-size:14px}
+#showRules:hover,#showAdminPage:hover{color:#fff;background:rgba(255,255,255,.1)}
 #showAdminPage{margin-inline-start:auto}
 
 .msg{min-height:0;margin-top:14px;font-size:14px;text-align:start;color:var(--err);white-space:pre-wrap}
-.msg:not(:empty){padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04)}
+.msg:not(:empty){padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.08)}
 .good{color:var(--ok)}
 #successCard{text-align:center}
 #successCard .msg{text-align:center}
@@ -74,33 +82,66 @@ button:disabled{opacity:.5;cursor:wait}
 .wide{grid-column:1/-1}
 .section{border-top:1px solid var(--line);margin-top:22px;padding-top:16px}
 .row{display:flex;gap:8px}.row button{flex:1}
-#rulesText{white-space:pre-wrap;color:#b9c7d6;font-size:15px}
-.code-list{font:14px Consolas,monospace;direction:ltr;text-align:left;max-height:190px;overflow:auto;white-space:pre-wrap;background:rgba(0,0,0,.6);border:1px solid var(--line);border-radius:10px;padding:12px}
+#rulesText{white-space:pre-wrap;color:rgba(240,244,255,.85);font-size:15px}
+.code-list{font:14px Consolas,monospace;direction:ltr;text-align:left;max-height:190px;overflow:auto;white-space:pre-wrap;background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:16px;padding:12px}
 .small{font-size:12px;color:var(--muted);margin:8px 0 0;text-align:start}
 
 .check{width:76px;height:76px;margin:0 auto 14px}
-.check svg{width:100%;height:100%;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 10px rgba(190,220,255,.7))}
+.check svg{width:100%;height:100%;fill:none;stroke:var(--ok);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .check circle{stroke-dasharray:152;stroke-dashoffset:152;animation:draw .8s ease forwards}
 .check path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .6s ease forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 
 @media(max-width:760px){
  #loginCard{grid-template-columns:1fr}
- .brand{padding:30px 24px 22px;border-inline-end:0;border-bottom:1px solid var(--line)}
- .lead,.points{display:none}.brand h2{margin:16px 0 0;font-size:24px}
- .formside{padding:26px 24px 28px}
- .grid{grid-template-columns:1fr}.card{padding:30px 22px 26px}
+ .brand{padding:0 0 6px}
+ .lead,.points{display:none}.brand h2{margin:14px 0 0;font-size:24px}
+ .formside{padding:0}
+ .grid{grid-template-columns:1fr}.card{padding:28px 22px 24px;border-radius:26px}
 }
-@media(prefers-reduced-motion:reduce){.card{animation:none}.check circle,.check path{animation:none;stroke-dashoffset:0}}
-select{width:100%;padding:13px 14px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;color:var(--fg);font:inherit;color-scheme:dark}select:focus{outline:none;border-color:#fff;box-shadow:0 0 0 4px rgba(190,220,255,.12)}
+@media(prefers-reduced-motion:reduce){.card,.orbs i{animation:none}.check circle,.check path{animation:none;stroke-dashoffset:0}}
+
+/* خانات الكود: كروت زجاج تتفرد وتتجمع في كارت واحد */
+.otp{position:relative}
+.slots{position:relative;display:flex;justify-content:center;align-items:center;gap:6px;min-height:80px;padding:8px 0}
+.slots b{flex:1 1 0;max-width:38px;min-width:0;height:54px;display:grid;place-items:center;position:relative;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.25);font:700 22px Consolas,monospace;transition:border-color .2s,background .2s,box-shadow .2s}
+.slots b.full{background:rgba(255,255,255,.16)}
+.slots b.on{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 4px rgba(255,255,255,.1)}
+.slots b.on::after{content:"";width:2px;height:22px;border-radius:2px;background:#fff;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.slots u{text-decoration:none;width:8px;flex:none;text-align:center;color:var(--muted)}
+.slots b.spin{background:rgba(255,255,255,.14)}
+.slots b.spin::after{content:"";position:absolute;inset:-3px;border-radius:16px;border:2px solid transparent;border-top-color:#fff;border-right-color:rgba(255,255,255,.45);animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.slots b.ok{color:var(--ok);border-color:var(--ok);background:rgba(255,255,255,.16);box-shadow:0 0 28px rgba(255,255,255,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+.slots b.bad{border-color:var(--err);background:rgba(255,163,176,.14);box-shadow:0 0 24px rgba(255,163,176,.4)}
+.slots.shake{animation:shake .5s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.otp input#code{position:absolute;inset:0;width:100%;height:100%;padding:0;opacity:0;font-size:16px;cursor:text;z-index:2}
+.otpstate{min-height:22px;margin-top:2px;text-align:center;color:var(--muted);font-size:14px}
+@media(max-width:400px){.slots{gap:4px}.slots b{height:48px;font-size:19px;border-radius:12px}}
+@media(prefers-reduced-motion:reduce){.slots.shake{animation:none}.slots b.on::after{animation:none}}
+
+/* أشكال دايرية + تفاعل */
+input,select,button,.btn{border-radius:999px}
+input,select{padding-inline:20px}
+textarea{border-radius:22px}
+.msg:not(:empty){border-radius:18px}
+button,.btn{position:relative;overflow:hidden}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.slots b{border-radius:50%;height:auto;aspect-ratio:1;max-width:40px}
+.slots b.spin::after{border-radius:50%}
+@media(max-width:400px){.slots b{height:auto;border-radius:50%}}
+@media(prefers-reduced-motion:reduce){.rip{display:none}.orbs{transition:none}}
 </style>
 </head><body>
 
-<canvas id="bg" aria-hidden="true"></canvas>
+<div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <main class="card" id="loginCard">
 <aside class="brand">
-<div class="mark">◈</div><h2>بوابة الاشتراك</h2>
+<div class="mark">◈</div>
 <p class="lead">فعّل اشتراكك بالكود وادخل الجروب في خطوة واحدة.</p>
 <ul class="points">
 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>تفعيل فوري بالكود</li>
@@ -113,7 +154,7 @@ select{width:100%;padding:13px 14px;background:rgba(255,255,255,.04);border:1px 
 <label for="name">الاسم</label>
 <div class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><input id="name" maxlength="60" autocomplete="name" placeholder="اسمك"></div>
 <label for="code">كود الاشتراك</label>
-<div class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></svg><input id="code" dir="ltr" autocomplete="off" placeholder="XXXX-XXXX"></div>
+<div class="otp"><div class="slots" id="slots" dir="ltr"><b style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><u>-</u><b style="--i:4"></b><b style="--i:5"></b><b style="--i:6"></b><b style="--i:7"></b></div><input id="code" dir="ltr" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="كود الاشتراك"></div><div class="otpstate" id="otpState" role="status"></div>
 <button id="redeem">اعبر</button><div class="msg" id="loginMsg" role="status"></div>
 <a class="mutedlink" id="supportLink" href="#" target="_blank" rel="noopener">ليس لديك كود؟ تواصل مع الدعم</a>
 <div class="links"><button id="showRules" type="button">عرض القوانين</button><button id="showAdminPage" type="button">دخول الأدمن</button></div>
@@ -146,29 +187,7 @@ select{width:100%;padding:13px 14px;background:rgba(255,255,255,.04);border:1px 
 </div>
 </main>
 
-<script>
-/* خيوط الخلفية: تتحرك ببطء وتتجاوب مع الماوس/اللمس */
-(()=>{const c=document.getElementById('bg'),x=c.getContext('2d'),N=38;
-const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let w,h,d,t=0,mx=-9999,my=-9999;
-function size(){d=Math.min(devicePixelRatio||1,2);w=c.width=innerWidth*d;h=c.height=innerHeight*d}
-function draw(){x.clearRect(0,0,w,h);x.lineWidth=d;
- const g=x.createLinearGradient(0,0,w,0);g.addColorStop(0,'rgba(200,225,255,0)');g.addColorStop(.5,'rgba(240,247,255,1)');g.addColorStop(1,'rgba(200,225,255,0)');x.strokeStyle=g;
- for(let i=0;i<N;i++){const k=i/(N-1),base=h*(.1+.8*k),mid=1-Math.abs(k-.5)*2;
-  x.globalAlpha=.07+.5*mid*mid;x.beginPath();
-  for(let px=0;px<=w;px+=14*d){const n=px/w;
-   let y=base+Math.sin(n*5+t*.5+i*.35)*h*.075*(.35+k)+Math.sin(n*11-t*.3+i*.8)*h*.016;
-   const dx=px-mx,dy=y-my,f=Math.exp(-(dx*dx+dy*dy)/(2*Math.pow(190*d,2)));y+=(my-y)*f*.2;
-   px?x.lineTo(px,y):x.moveTo(px,y)}
-  x.stroke()}
- x.globalAlpha=1}
-function loop(){t+=.012;draw();requestAnimationFrame(loop)}
-size();addEventListener('resize',()=>{size();draw()});
-addEventListener('pointermove',e=>{mx=e.clientX*d;my=e.clientY*d});
-addEventListener('pointerleave',()=>{mx=my=-9999});
-still?draw():loop();
-})();
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 <script>
@@ -176,6 +195,44 @@ still?draw():loop();
 let CONFIG={url:"",anonKey:""};
 try{if(window.APP_CONFIG)CONFIG=window.APP_CONFIG}catch(e){}
 const $=id=>document.getElementById(id);
+/* تأثير الكود: الكروت تتفرد وتتجمع في كارت واحد وبعدين يتحول لصح */
+const OTP=(()=>{
+ const input=$('code'),slots=$('slots'),bs=[...slots.querySelectorAll('b')],us=[...slots.querySelectorAll('u')],st=$('otpState');
+ const still=matchMedia('(prefers-reduced-motion:reduce)').matches,wait=ms=>new Promise(r=>setTimeout(r,ms));
+ const CHECK='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+ let busy=false,prevN=0;
+ const raw=()=>input.value.replace(/-/g,'');
+ function render(){if(busy)return;const c=raw(),f=document.activeElement===input;bs.forEach((b,i)=>{b.textContent=c[i]||'';b.classList.toggle('full',!!c[i]);b.classList.toggle('on',f&&i===c.length)})}
+ function reset(){bs.forEach(b=>{b.getAnimations().forEach(a=>a.cancel());b.classList.remove('on','full','spin','ok','bad');b.style.opacity='';b.textContent=''});prevN=0;us.forEach(u=>u.getAnimations().forEach(a=>a.cancel()));slots.classList.remove('shake');st.textContent='';busy=false}
+ async function play(){
+  busy=true;bs.forEach(b=>b.classList.remove('on'));
+  if(still){bs.forEach((b,i)=>{if(i!==3)b.style.opacity=0})}
+  else{
+   us.forEach(u=>u.animate({opacity:[1,0]},{duration:200,fill:'forwards'}));
+   const fan=i=>{const d=i-3.5;return 'translateY('+(d*d*1.5)+'px) rotate('+(d*7)+'deg)'};
+   await Promise.all(bs.map((b,i)=>b.animate([{transform:'none'},{transform:fan(i)}],{duration:420,easing:'cubic-bezier(.3,1.5,.5,1)',fill:'forwards'}).finished));
+   await wait(140);
+   const mid=slots.clientWidth/2;
+   await Promise.all(bs.map((b,i)=>{const dx=mid-(b.offsetLeft+b.offsetWidth/2),end='translate('+dx+'px,0) rotate(0deg)';
+    return b.animate([{transform:fan(i),opacity:1},{opacity:1,offset:.6},{transform:end,opacity:i===3?1:0}],{duration:480,easing:'ease-in-out',fill:'forwards'}).finished}));
+  }
+  bs[3].textContent='';bs[3].classList.add('spin');st.textContent='جاري التحقق…';
+ }
+ async function ok(){bs[3].classList.remove('spin');bs[3].classList.add('ok');bs[3].innerHTML=CHECK;st.textContent='تم التحقق';await wait(1000)}
+ async function fail(){bs[3].classList.remove('spin');bs[3].classList.add('bad');st.textContent='';slots.classList.add('shake');await wait(650);reset();input.value='';render();input.focus()}
+ input.addEventListener('input',()=>{
+  if(busy)return;
+  let v=input.value.toUpperCase().replace(/[^A-Z0-9-]/g,'');
+  if(!v.includes('-')){v=v.slice(0,8);if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4)}else v=v.slice(0,12);
+  input.value=v;render();
+  {const n=raw().length;if(n>prevN&&n<=8&&!still){bs[n-1].animate([{transform:'scale(.7)'},{transform:'scale(1.14)'},{transform:'scale(1)'}],{duration:280,easing:'ease-out'});navigator.vibrate&&navigator.vibrate(8)}prevN=n}
+  if(raw().length===8)setTimeout(()=>{if(!busy&&raw().length===8)$('redeem').click()},160);
+ });
+ input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!busy)$('redeem').click()});
+ input.addEventListener('focus',render);input.addEventListener('blur',render);
+ render();
+ return {play,ok,fail};
+})();
 const DEFAULT_RULES="1) الاشتراك شخصي ولا يجوز مشاركة الكود أو رابط الجروب مع أي شخص.\n2) ممنوع نشر المحتوى أو تسريبه أو إعادة نشره بأي شكل.\n3) مخالفة القوانين تؤدي إلى إلغاء الاشتراك.\n4) للدعم تواصل عبر الرابط الموضح.";
 let db=null,session=null,settings={};
 function msg(id,text,good=false){$(id).textContent=text;$(id).classList.toggle('good',good)}
@@ -196,11 +253,11 @@ $('showAdminPage').onclick=()=>{hide('loginCard');show('adminCard')};
 $('redeem').onclick=async()=>{
  const name=$('name').value.trim(),code=$('code').value.trim().toUpperCase();
  if(!name||!code){msg('loginMsg','اكتب اسمك وكود الاشتراك.');return}
- $('redeem').disabled=true;msg('loginMsg','جاري التحقق...');
- const {data,error}=await db.rpc('redeem_subscription_code',{p_code:code,p_name:name});
+ $('redeem').disabled=true;msg('loginMsg','');
+ const anim=OTP.play();const [{data,error}]=await Promise.all([db.rpc('redeem_subscription_code',{p_code:code,p_name:name}),anim]);
  $('redeem').disabled=false;
- if(error||!data||!data.ok){msg('loginMsg',data?.message||'الكود غير صحيح أو تم استخدامه بالفعل.');return}
- hide('loginCard');show('successCard');$('welcome').textContent='أهلًا '+name+'، تم تفعيل اشتراكك في '+(data.group_name||settings.group_name||'الجروب')+'.';$('groupLink').href=data.group_url||settings.group_url||'#';
+ if(error||!data||!data.ok){msg('loginMsg',data?.message||'الكود غير صحيح أو تم استخدامه بالفعل.');OTP.fail();return}
+ await OTP.ok();hide('loginCard');show('successCard');$('welcome').textContent='أهلًا '+name+'، تم تفعيل اشتراكك في '+(data.group_name||settings.group_name||'الجروب')+'.';$('groupLink').href=data.group_url||settings.group_url||'#';
 }
 $('adminLogin').onclick=async()=>{
  if(!db)return;msg('adminMsg','جاري تسجيل الدخول...');
@@ -238,8 +295,8 @@ async function refreshCodes(){
  const {data,error}=await db.rpc('admin_list_subscription_codes');if(error){$('codesList').textContent='تعذر تحميل الأكواد.';return}
  $('codesList').innerHTML='';
  (data||[]).forEach(item=>{
-  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid #26313f;padding:7px 0;direction:rtl';
-  const label=document.createElement('span');const mx=item.max_uses||1,cnt=item.used_count??(item.used?1:0);label.textContent=item.code+' — '+(mx>1?cnt+' / '+mx+' مستخدمين':(cnt>=mx?'مستخدم':'متاح'));label.style.color=cnt>=mx?'#8d9bab':'#8ff0c2';
+  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.14);padding:7px 0;direction:rtl';
+  const label=document.createElement('span');const mx=item.max_uses||1,cnt=item.used_count??(item.used?1:0);label.textContent=item.code+' — '+(mx>1?cnt+' / '+mx+' مستخدمين':(cnt>=mx?'مستخدم':'متاح'));label.style.color=cnt>=mx?'rgba(235,240,255,.5)':'rgba(255,255,255,.85)';
   const del=document.createElement('button');del.textContent='حذف';del.style.cssText='width:auto;margin:0;padding:4px 10px;font-size:12px';del.onclick=async()=>{if(!confirm('تأكيد حذف الكود '+item.code+'؟'))return;const {error}=await db.rpc('admin_delete_subscription_code',{p_code:item.code});if(error){msg('adminMsg','فشل حذف الكود.');return}await refreshCodes();msg('adminMsg','تم حذف الكود.',true)};
   row.append(label,del);$('codesList').append(row);
  });
@@ -250,5 +307,17 @@ $('changePassword').onclick=async()=>{
  const {error}=await db.auth.updateUser({password:p});msg('adminMsg',error?'تعذر تغيير كلمة المرور.':'تم تغيير كلمة المرور.',!error);if(!error)$('newPassword').value='';
 }
 init();
+</script>
+<script>
+/* تفاعل: الخلفية تتحرك مع الصباع، والكارت يميل وفيه لمعة تتبعك، وموجة عند الضغط */
+(()=>{const fine=matchMedia('(hover:hover) and (pointer:fine)').matches,still=matchMedia('(prefers-reduced-motion:reduce)').matches,root=document.documentElement;
+addEventListener('pointermove',e=>{if(still)return;root.style.setProperty('--px',(e.clientX/innerWidth-.5).toFixed(3));root.style.setProperty('--py',(e.clientY/innerHeight-.5).toFixed(3))});
+document.querySelectorAll('#loginCard,#successCard,#adminCard').forEach(c=>{
+ c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  c.style.setProperty('--mx',(x*100)+'%');c.style.setProperty('--my',(y*100)+'%');
+  if(fine&&!still&&c.id!=='adminCard')c.style.transform='perspective(900px) rotateX('+((.5-y)*6)+'deg) rotateY('+((x-.5)*8)+'deg)'});
+ c.addEventListener('pointerleave',()=>{c.style.transform=''})});
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('button,.btn');if(!b||still)return;const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2,i=document.createElement('span');i.className='rip';i.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';b.append(i);setTimeout(()=>i.remove(),650)});
+})();
 </script>
 </body></html>
