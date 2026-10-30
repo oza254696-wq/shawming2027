@@ -172,17 +172,20 @@ button,.btn{position:relative;overflow:hidden}
 <div class="wide row"><button id="adminLogin">تسجيل دخول الأدمن</button><button id="adminLogout">تسجيل الخروج</button></div>
 </div><div class="msg" id="adminMsg"></div>
 <div id="adminControls" class="hidden">
-<div class="section"><h3>إعدادات الاشتراك</h3><div class="grid">
+<div class="section"><h3>إدارة الجروبات</h3>
+<label for="groupPicker">اختيار الجروب</label><select id="groupPicker"><option value="">تحميل الجروبات...</option></select>
+<div class="row"><button id="newGroup" type="button">جروب جديد</button><button id="deleteGroup" type="button">حذف الجروب</button></div>
+<div class="grid">
 <div class="wide"><label for="groupName">اسم الجروب</label><input id="groupName"></div>
 <div class="wide"><label for="groupUrl">رابط الجروب</label><input id="groupUrl" dir="ltr" placeholder="https://t.me/..."></div>
 <div class="wide"><label for="supportUrl">رابط الدعم</label><input id="supportUrl" dir="ltr" placeholder="https://t.me/..."></div>
 <div class="wide"><label for="rulesInput">القوانين</label><textarea id="rulesInput"></textarea></div>
-<div class="wide"><button id="saveSettings">حفظ الإعدادات</button></div>
-</div></div>
-<div class="section"><h3>إدارة الأكواد</h3><label for="newCode">كود جديد (اختياري، سيُنشأ تلقائيًا إن تركته فارغًا)</label><input id="newCode" dir="ltr" placeholder="ABCD-2345">
-<label for="maxUses">عدد الأشخاص المسموح لهم بالدخول بالكود</label><select id="maxUses"><option value="1">شخص واحد</option><option value="3">ثلاثة أشخاص</option></select>
+<div class="wide"><button id="saveSettings">حفظ الجروب</button></div>
+</div><p class="small">كل جروب له رابط وقوانين وأكواد اشتراك مستقلة.</p></div>
+<div class="section"><h3>إدارة الأكواد</h3><p class="small" id="codeGroupLabel">الأكواد هتتضاف للجروب المختار.</p>
+<label for="newCode">كود جديد (اتركه فارغًا للتوليد التلقائي)</label><input id="newCode" dir="ltr" placeholder="ABCD-2345">
 <div class="row"><button id="addCode">إضافة كود</button><button id="generateCode">توليد كود</button></div>
-<label>الأكواد الحالية</label><div class="code-list" id="codesList">سجّل الدخول لتحميل الأكواد.</div><p class="small">حذف الكود يلغي إمكانية استخدامه. الأكواد المستخدمة تظهر بحالة «مستخدم».</p></div>
+<label>الأكواد الحالية</label><div class="code-list" id="codesList">سجّل الدخول لتحميل الأكواد.</div><p class="small">كل كود يُستخدم مرة واحدة. حذف الكود يلغي إمكانية استخدامه.</p></div>
 <div class="section"><h3>تغيير كلمة مرور الأدمن</h3><label for="newPassword">كلمة المرور الجديدة</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password"><button id="changePassword">تغيير كلمة المرور</button></div>
 </div>
 </main>
@@ -265,39 +268,80 @@ $('adminLogin').onclick=async()=>{
  if(error){msg('adminMsg','فشل تسجيل الدخول: تأكد من البريد وكلمة المرور.');return}
  session=data.session;await loadAdmin(); 
 }
+let groups=[], selectedGroupId=null;
 async function loadAdmin(){
  const {data:userData}=await db.auth.getUser();if(!userData?.user){msg('adminMsg','لم يتم التحقق من المستخدم.');return}
  const {data:role,error:roleError}=await db.rpc('is_site_admin');
  if(roleError||role!==true){await db.auth.signOut();session=null;msg('adminMsg','الحساب ده مش مضاف كأدمن في قاعدة البيانات.');return}
  show('adminControls');msg('adminMsg','تم تسجيل دخول الأدمن.',true);
- const {data:s,error}=await db.rpc('admin_get_settings');if(error){msg('adminMsg','تعذر تحميل الإعدادات. راجع SQL.');return}
- settings=s||{};$('groupName').value=settings.group_name||'';$('groupUrl').value=settings.group_url||'';$('supportUrl').value=settings.support_url||'';$('rulesInput').value=settings.rules||DEFAULT_RULES;
+ await refreshGroups();
  await refreshCodes();
 }
-$('adminLogout').onclick=async()=>{if(db)await db.auth.signOut();hide('adminControls');msg('adminMsg','تم تسجيل الخروج.');};
+async function refreshGroups(){
+ const {data,error}=await db.rpc('admin_list_groups');
+ if(error){msg('adminMsg','تعذر تحميل الجروبات: '+error.message);return}
+ groups=data||[];
+ const picker=$('groupPicker');picker.innerHTML='';
+ groups.forEach(g=>{const o=document.createElement('option');o.value=g.id;o.textContent=g.group_name;picker.append(o)});
+ if(selectedGroupId&&!groups.some(g=>g.id===selectedGroupId))selectedGroupId=null;
+ if(!selectedGroupId&&groups.length)selectedGroupId=groups[0].id;
+ picker.value=selectedGroupId||'';
+ loadSelectedGroup();
+}
+function loadSelectedGroup(){
+ const g=groups.find(x=>x.id===selectedGroupId);
+ $('groupName').value=g?.group_name||'';
+ $('groupUrl').value=g?.group_url||'';
+ $('supportUrl').value=g?.support_url||'';
+ $('rulesInput').value=g?.rules||DEFAULT_RULES;
+ $('codeGroupLabel').textContent=g?'الأكواد الجديدة هتتضاف للجروب: '+g.group_name:'أنشئ جروب واحفظه أولًا لإضافة الأكواد.';
+ $('addCode').disabled=!g;
+}
+$('groupPicker').onchange=()=>{selectedGroupId=$('groupPicker').value||null;loadSelectedGroup()};
+$('newGroup').onclick=()=>{
+ selectedGroupId=null;$('groupPicker').value='';
+ $('groupName').value='';$('groupUrl').value='';$('supportUrl').value='';$('rulesInput').value=DEFAULT_RULES;
+ $('codeGroupLabel').textContent='اكتب بيانات الجروب الجديد واحفظه قبل إضافة الأكواد.';
+ $('addCode').disabled=true;msg('adminMsg','أدخل بيانات الجروب الجديد ثم اضغط حفظ الجروب.');
+};
+$('deleteGroup').onclick=async()=>{
+ if(!selectedGroupId){msg('adminMsg','اختار جروب لحذفه.');return}
+ const g=groups.find(x=>x.id===selectedGroupId);
+ if(!confirm('تأكيد حذف الجروب "'+(g?.group_name||'')+'"؟'))return;
+ const {data,error}=await db.rpc('admin_delete_group',{p_group_id:selectedGroupId});
+ if(error||data!==true){msg('adminMsg',error?.message||'تعذر حذف الجروب. قد يكون مرتبطًا بأكواد.');return}
+ selectedGroupId=null;await refreshGroups();await refreshCodes();msg('adminMsg','تم حذف الجروب.',true);
+};
+$('adminLogout').onclick=async()=>{if(db)await db.auth.signOut();hide('adminControls');groups=[];selectedGroupId=null;msg('adminMsg','تم تسجيل الخروج.');};
 $('saveSettings').onclick=async()=>{
  const group_name=$('groupName').value.trim(),group_url=$('groupUrl').value.trim(),support_url=$('supportUrl').value.trim(),rules=$('rulesInput').value.trim();
- if(!group_name||!validUrl(group_url)|| (support_url&&!validUrl(support_url))){msg('adminMsg','اكتب اسم الجروب ورابطًا صحيحًا يبدأ بـ https://');return}
- const {error}=await db.rpc('admin_update_settings',{p_group_name:group_name,p_group_url:group_url,p_support_url:support_url,p_rules:rules});
- msg('adminMsg',error?'فشل حفظ الإعدادات. تأكد من تنفيذ ملف schema.sql.':'تم حفظ الإعدادات وتحديثها لكل المستخدمين.',!error);
- if(!error)await loadPublicSettings();
-}
+ if(!group_name||!validUrl(group_url)||(support_url&&!validUrl(support_url))){msg('adminMsg','اكتب اسم الجروب ورابطًا صحيحًا يبدأ بـ https://');return}
+ let result;
+ if(selectedGroupId){
+  result=await db.rpc('admin_update_group',{p_group_id:selectedGroupId,p_group_name:group_name,p_group_url:group_url,p_support_url:support_url,p_rules:rules});
+ }else{
+  result=await db.rpc('admin_add_group',{p_group_name:group_name,p_group_url:group_url,p_support_url:support_url,p_rules:rules});
+ }
+ if(result.error){msg('adminMsg','فشل حفظ الجروب: '+result.error.message);return}
+ if(!selectedGroupId)selectedGroupId=result.data;
+ await refreshGroups();await refreshCodes();msg('adminMsg','تم حفظ الجروب بنجاح.',true);
+};
 function makeCode(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let a='';const bytes=crypto.getRandomValues(new Uint8Array(8));for(let i=0;i<8;i++){if(i===4)a+='-';a+=chars[bytes[i]%chars.length]}return a}
 $('generateCode').onclick=()=>{$('newCode').value=makeCode()};
 $('addCode').onclick=async()=>{
+ if(!selectedGroupId){msg('adminMsg','اختار جروب أو أنشئ جروبًا جديدًا أولًا.');return}
  let code=$('newCode').value.trim().toUpperCase()||makeCode();
- const max=Number($('maxUses').value)||1;
- const {data,error}=await db.rpc('admin_add_subscription_code',max>1?{p_code:code,p_max_uses:max}:{p_code:code});
- if(error||!data?.ok){msg('adminMsg',data?.message||'تعذر إضافة الكود.');return}
- $('newCode').value='';msg('adminMsg','تمت إضافة الكود: '+code+(max>1?' (يسمح بـ '+max+' أشخاص)':''),true);await refreshCodes();
-}
+ const {data,error}=await db.rpc('admin_add_subscription_code',{p_code:code,p_group_id:selectedGroupId});
+ if(error||!data?.ok){msg('adminMsg',data?.message||error?.message||'تعذر إضافة الكود.');return}
+ $('newCode').value='';msg('adminMsg','تمت إضافة الكود: '+code,true);await refreshCodes();
+};
 async function refreshCodes(){
- const {data,error}=await db.rpc('admin_list_subscription_codes');if(error){$('codesList').textContent='تعذر تحميل الأكواد.';return}
+ const {data,error}=await db.rpc('admin_list_subscription_codes');if(error){$('codesList').textContent='تعذر تحميل الأكواد: '+error.message;return}
  $('codesList').innerHTML='';
  (data||[]).forEach(item=>{
   const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.14);padding:7px 0;direction:rtl';
-  const label=document.createElement('span');const mx=item.max_uses||1,cnt=item.used_count??(item.used?1:0);label.textContent=item.code+' — '+(mx>1?cnt+' / '+mx+' مستخدمين':(cnt>=mx?'مستخدم':'متاح'));label.style.color=cnt>=mx?'rgba(235,240,255,.5)':'rgba(255,255,255,.85)';
-  const del=document.createElement('button');del.textContent='حذف';del.style.cssText='width:auto;margin:0;padding:4px 10px;font-size:12px';del.onclick=async()=>{if(!confirm('تأكيد حذف الكود '+item.code+'؟'))return;const {error}=await db.rpc('admin_delete_subscription_code',{p_code:item.code});if(error){msg('adminMsg','فشل حذف الكود.');return}await refreshCodes();msg('adminMsg','تم حذف الكود.',true)};
+  const label=document.createElement('span');label.textContent=item.code+' — '+(item.group_name||'جروب')+' — '+(item.used?'مستخدم':'متاح');label.style.color=item.used?'rgba(235,240,255,.5)':'rgba(255,255,255,.85)';
+  const del=document.createElement('button');del.textContent='حذف';del.style.cssText='width:auto;margin:0;padding:4px 10px;font-size:12px';del.onclick=async()=>{if(!confirm('تأكيد حذف الكود '+item.code+'؟'))return;const {error}=await db.rpc('admin_delete_subscription_code',{p_code:item.code});if(error){msg('adminMsg','فشل حذف الكود: '+error.message);return}await refreshCodes();msg('adminMsg','تم حذف الكود.',true)};
   row.append(label,del);$('codesList').append(row);
  });
  if(!data?.length)$('codesList').textContent='لا توجد أكواد حتى الآن.';
